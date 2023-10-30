@@ -1,4 +1,4 @@
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
 const router = require("./routes/userRoutes");
 const path = require("path");
@@ -26,7 +26,7 @@ async function start() {
 	try {
 		const result = await dbConnection.execute("select 'test'");
 		await app.listen(1234);
-
+		console.log(result[0]);
 	} catch (error) {
 		console.log(error.message);
 	}
