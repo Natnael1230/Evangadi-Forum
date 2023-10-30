@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./AskQuestion.css";
+import { Link } from "react-router-dom";
+import axios from "./axios";
 function AskQuestion() {
 	//state to store question title from the user
 	let [titleValue, setTitleValue] = useState("");
@@ -10,31 +12,66 @@ function AskQuestion() {
 
 	function submit(e) {
 		e.preventDefault();
+		if(!titleValue || ! discriptionValue){
+			return setQuestionResponse("Question title or Discrtiption can not be empty")
+		}
 		const token = localStorage.getItem("token");
-		let questionData = {
-			title: titleValue,
-			description: discriptionValue,
-		};
-		fetch("http://localhost:1234/api/questions/new-question", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				authorization: "Bearer " + token,
-			},
-			body: JSON.stringify(questionData),
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				setQuestionResponse(data.msg);
-			})
-			.catch((error) => {
-				console.error("Error:", error);
-			});
+		try {
+			console.log("token ", token);
+			axios
+				.post(
+					"/questions/new-question",
+					{
+						title: titleValue,
+						description: discriptionValue,
+					},
+					{
+						headers: {
+							authorization: "Bearer " + token,
+						},
+					}
+				)
+				.then((response) => {
+					console.log(response);
+					setQuestionResponse(response.data.msg);
+					e.target.reset();
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		} catch (error) {
+			console.log("in catch block");
+			console.log(error);
+		}
+
+		// fetch("http://localhost:1234/api/questions/new-question", {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		authorization: "Bearer " + token,
+		// 	},
+		// 	body: JSON.stringify(questionData),
+		// })
+		// 	.then((response) => response.json())
+		// 	.then((data) => {
+		// 		if (
+		// 			data.msg === "token not provide" ||
+		// 			data.msg === "Authentication Invalid"
+		// 		) {
+		// 			console.log("not provide");
+		// 			navigate("/");
+		// 		}
+		// 		setQuestionResponse(data.msg);
+		// 		e.target.reset();
+		// 	})
+		// 	.catch((error) => {
+		// 		console.error("Error:", error);
+		// 	});
 	}
 	return (
-		<>
+		<div className="">
 			<div className="askQuestion">
-				<h1>Steps to write a good question</h1>
+				<h2>Steps to write a good question</h2>
 
 				<ul className="">
 					<li>Summerize your problem in a one-line title.</li>
@@ -49,8 +86,11 @@ function AskQuestion() {
 				<br />
 				<br />
 				<br />
-				<h1>Ask a public question</h1>
-				<p>Go to Question page</p>
+				<h2>Ask a public question</h2>
+				<Link to="/allquestion">
+					<p>Go to Question page</p>
+				</Link>
+
 				<br />
 				<h1 className="blue">{questionResponse}</h1>
 			</div>
@@ -58,6 +98,7 @@ function AskQuestion() {
 			<form onSubmit={submit}>
 				<div className="askQuestion">
 					<input
+						className="textArea"
 						onChange={(e) => setTitleValue(e.target.value)}
 						type="text"
 						placeholder="Title"
@@ -65,11 +106,12 @@ function AskQuestion() {
 					<br />
 
 					<textarea
+						className="textArea"
 						onChange={(e) => setDiscriptionValue(e.target.value)}
 						name=""
 						id=""
-						cols="121"
-						rows="20"
+						cols=""
+						rows=""
 						placeholder="Question description..."
 					></textarea>
 					<br />
@@ -78,7 +120,7 @@ function AskQuestion() {
 					</button>
 				</div>
 			</form>
-		</>
+		</div>
 	);
 }
 

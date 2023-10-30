@@ -1,27 +1,32 @@
 .Abutton{
     background-color: #516CF0;
-    padding: 12px 70px;
+    padding: 10px 0;
+    /* width: 250px; */
     color: white;
     border: none;
     border-radius: 12px;
+    margin: 15px 0;
 }
 .Abutton:hover{
     background-color: #FE8402;
 }
 .Ainput{
-    width: 200px;
+    /* width: 200px; */
     height: 35px;
     border-radius: 12px;
     border: 1px solid grey;
-    width: 270px;
+    margin: 15px 0;
+    /* width: 270px; */
+    /* width: 100%; */
 }
-.flexWrapper{
-    display: flex;
-    justify-content: space-between;
-    margin: 40px 40px;
+.flexWrapper h4{
+    margin: 15px 0;
+        /* display: flex;
+        justify-content: space-between;
+        margin: 40px 40px; */
 }
 .allQuestions{
-    margin: 0 40px;
+    /* margin: 0 40px; */
 }
 .questions{
     display: flex;

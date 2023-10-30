@@ -7,6 +7,6 @@ router.post("/register", register);
 
 router.post("/login", login);
 
-router.get("/check", middleware, check);
+router.get("/check",middleware,check);
 
 module.exports = router;

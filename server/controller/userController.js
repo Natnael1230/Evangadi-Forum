@@ -54,6 +54,7 @@ async function login(req, res) {
 			"SELECT username,userid,password FROM users_ WHERE email = ? ",
 			[email]
 		);
+		// console.log(user);
 		if(user.length==0){
 			return res.status(400).json({msg: "email deos not exist"})
 		}
@@ -65,7 +66,11 @@ async function login(req, res) {
 		}
 		const username = user[0].username;
 		const userid = user[0].userid;
-		const token = jwt.sign({username,userid},"secret",{expiresIn:"1d"})
+		const token = jwt.sign(
+			{ username, userid },
+			"4R9ccgz4Y8dyi1XdNkjKIgDupFVHXWrH",
+			{ expiresIn: "1d" }
+		);
 
 		return res.status(200).json({msg: "user login successfuly",token, username})
 
@@ -83,6 +88,7 @@ async function check(req, res) {
 	const userid = req.user.userid;
 	console.log(username, userid);
 	res.json({username});
+	// res.json({msg:"user loged in successfully"})
 }
 
 module.exports = { register, login, check };

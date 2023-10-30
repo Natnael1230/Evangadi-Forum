@@ -31,10 +31,8 @@ const newQuestion = async (req, res) => {
 
 		// If a similar question exists, return a 409 conflict response
 		if (existingQuestion.length > 0) {
-			return res
-				.status(400)
-				.json({existingQuestion})
-				// .json({ error: "A similar question already exists" });
+			return res.status(400).json({ existingQuestion });
+			// .json({ error: "A similar question already exists" });
 		}
 
 		// Check if the description is not empty
@@ -58,13 +56,28 @@ const newQuestion = async (req, res) => {
 };
 
 async function allQuestions(req, res) {
+	const { search } = req.headers;
+
+	console.log(search);
 	try {
+		//serach question
+		if(search){
+			console.log("searched");
+			let [serachQuestions] = await dbConnection.query(
+				"SELECT * FROM questions_ WHERE title LIKE  concat('%' , ?, '%')",
+				[search]
+			);
+			// console.log("serach questions",serachQuestions);
+		return res.status(200).json({ serachQuestions });
+	}
+
+
 		//query username and all questions from the users and questions table
+		console.log("all questions");
 		let [allQuestion] = await dbConnection.query(
 			`SELECT q.questionid, q.title, u.username FROM questions_ q JOIN users_ u ON q.user_id = u.userid  ORDER BY id DESC;`
 		);
 		return res.status(200).json({ allQuestion });
-
 	} catch (error) {
 		// Log and return a 500 internal server error response if an error occurs
 		console.log(error.message);
@@ -94,7 +107,7 @@ async function singleQuestion(req, res) {
 				.json({ msg: "question not found with the provided id" });
 		} else {
 			//if the provided question id is exist on the database return the data
-			console.log(oneQuestion);
+			// console.log(oneQuestion);
 			res.send({ oneQuestion });
 		}
 	} catch (error) {
@@ -104,7 +117,3 @@ async function singleQuestion(req, res) {
 }
 
 module.exports = { newQuestion, allQuestions, singleQuestion };
-
-
-
-

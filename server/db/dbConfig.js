@@ -7,6 +7,9 @@ const dbConnection = mysql2.createPool({
 	connectionLimit: 10,
 });
 
+dbConnection.execute("select 'test'");
+// dbConnection
+
 
 
 module.exports=dbConnection.promise();
