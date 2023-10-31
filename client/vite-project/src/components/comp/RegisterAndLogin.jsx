@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./RegisterAndLogin.css";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link, useNavigate } from "react-router-dom";
-import { stateValue } from "./home/context";
-import axios from "./home/axios";
+import { stateValue } from "../home/context";
+import axios from "../home/axios";
 function RegisterAndLogin() {
 	const navigate = useNavigate();
 
@@ -14,15 +13,10 @@ function RegisterAndLogin() {
 	}, []);
 
 	//to toggle the register and login form
-	let [regDis, setRegDis] = useState("display");
-	let [logDis, setLogDis] = useState("");
-	function registerDisplay() {
-		setRegDis("display");
-		setLogDis("");
-	}
-	function loginDisplay() {
-		setLogDis("display");
-		setRegDis("");
+	//updated toogle
+	let [firstToogle, setFirstToggle] = useState(true);
+	function registerAndLoginToogler() {
+		setFirstToggle(!firstToogle);
 	}
 
 	//states to store register data
@@ -34,73 +28,32 @@ function RegisterAndLogin() {
 	let [password, setPassword] = useState("");
 	function agreeAndJoinHandler(e) {
 		e.preventDefault();
-		// let data = {
-		// 	email: email,
-		// 	firstname: firstName,
-		// 	lastname: lastName,
-		// 	username: userName,
-		// 	password: password,
-		// };
 		try {
 			axios
-				.post(
-					"/users/register",
-					{
-						email: email,
-						firstname: firstName,
-						lastname: lastName,
-						username: userName,
-						password: password,
-					},
-				)
-					.then((response) => {
-				console.log(response);
-				setRegisterResponse(response.data.msg);
-				if (response.data.msg == "user registered") {
-					e.target.reset();
-					setTimeout(() => {
-						window.location.reload();
-					}, 2000);
-				}
-			})
-			.catch((error) => {
-				console.error("Error:", error);
-				setRegisterResponse(error.response.data.msg);
-			});
+				.post("/users/register", {
+					email: email,
+					firstname: firstName,
+					lastname: lastName,
+					username: userName,
+					password: password,
+				})
+				.then((response) => {
+					setRegisterResponse(response.data.msg);
+					if (response.data.msg == "user registered") {
+						e.target.reset();
+						setTimeout(() => {
+							window.location.reload();
+						}, 2000);
+					}
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+					setRegisterResponse(error.response.data.msg);
+				});
 		} catch (error) {
-			console.log("in catch block");
 			console.log(error);
 		}
-
-
-
-
-
-		// fetch("http://localhost:1234/api/users/register", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify(data),
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		console.log(data);
-		// 		setRegisterResponse(data.msg);
-		// 		if (data.msg == "user registered") {
-		// 			e.target.reset();
-		// 			setTimeout(() => {
-		// 				window.location.reload();
-		// 			}, 2000);
-		// 		}
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error("Error:", error);
-		// 	});
 	}
-
-
-
 
 	//states to store login data
 	let [loginResponse, setLoginResponse] = useState("");
@@ -108,20 +61,13 @@ function RegisterAndLogin() {
 	let [loginPassword, setLoginPassword] = useState("");
 	function loginHandler(e) {
 		e.preventDefault();
-		// let loginData = {
-		// 	email: loginEmail,
-		// 	password: loginPassword,
-		// };
-
 		try {
 			axios
 				.post("/users/login", {
 					email: loginEmail,
 					password: loginPassword,
 				})
-				// .then((response) => response.json())
 				.then((response) => {
-					console.log('res',response.data.msg);
 					setLoginResponse(response.data.msg);
 					const token = response.data.token;
 					localStorage.setItem("token", token);
@@ -134,48 +80,23 @@ function RegisterAndLogin() {
 					setLoginResponse(error.response.data.msg);
 				});
 		} catch (error) {
-			console.log("in catch block");
 			console.log(error);
 		}
-
-
-
-
-		// fetch("http://localhost:1234/api/users/login", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify(loginData),
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		console.log(data);
-		// 		setLoginResponse(data.msg);
-		// 		const token = data.token;
-		// 		localStorage.setItem("token", token);
-		// 		if (data.msg == "user login successfuly") {
-		// 			navigate("/allquestion");
-		// 		}
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error("Error:", error);
-		// 	});
 	}
 
 	return (
 		<div className="container">
 			<div className="row">
 				{/* register */}
-				<form onSubmit={agreeAndJoinHandler} >
-					<div className={regDis}>
+				<form onSubmit={agreeAndJoinHandler}>
+					<div className={`${firstToogle ? "display" : ""}`}>
 						<div className="mainRegisterWrapper">
 							<div className="secondRegisterWrapper">
 								<div className="joinNetwork">
 									<h3 className="textCenter">Join the network</h3>
 									<p className="textCenter">
 										Already have an account?{" "}
-										<span className="orange" onClick={registerDisplay}>
+										<span className="orange" onClick={registerAndLoginToogler}>
 											Sign in
 										</span>
 									</p>
@@ -229,7 +150,7 @@ function RegisterAndLogin() {
 									</p>
 									<p className="textCenter">
 										<br />
-										<p className="orange" onClick={registerDisplay}>
+										<p className="orange" onClick={registerAndLoginToogler}>
 											Already have an account?
 										</p>
 									</p>
@@ -240,14 +161,15 @@ function RegisterAndLogin() {
 				</form>
 
 				{/* login */}
-				<div className={logDis}>
+				<div
+					className={`${firstToogle ? "" : "display"}`}>
 					<div className="mainRegisterWrapper">
 						<div className="secondRegisterWrapper">
 							<div className="joinNetwork">
 								<h3 className="textCenter">Login to your account</h3>
 								<p className="textCenter">
 									Don’t have an account?
-									<span className="orange" onClick={loginDisplay}>
+									<span className="orange" onClick={registerAndLoginToogler}>
 										Create a new account
 									</span>
 								</p>
@@ -265,8 +187,6 @@ function RegisterAndLogin() {
 									placeholder="Password"
 									onChange={(e) => setLoginPassword(e.target.value)}
 								/>
-								{/* <VisibilityIcon /> */}
-
 								<p className="forgetPass orange">Forgot password?</p>
 								<div className="textCenter">
 									<button className="button loginButton" onClick={loginHandler}>

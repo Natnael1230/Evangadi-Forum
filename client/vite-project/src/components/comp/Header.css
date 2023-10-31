@@ -26,3 +26,16 @@
 .button:hover{
     background-color: #FE8402;
 }
+.phoneLogout{
+    text-align: right;
+}
+.phoneLogout > button{
+    padding: 5px 20px;
+    color: white;
+    background-color: #516cf0;
+    border: none;
+}
+.phoneLogout:hover{
+    background-color: #FE8402;
+    border-radius: 5px; 
+}

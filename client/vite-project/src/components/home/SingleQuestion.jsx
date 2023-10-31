@@ -31,9 +31,6 @@ function SingleQuestion() {
 					},
 				})
 				.then((response) => {
-					// console.log(response);
-					// console.log(response?.data?.allQuestion);
-					// setQuestion(response?.data.allQuestion);
 					setQuestion(response?.data?.oneQuestion[0]);
 				})
 				.catch((error) => {
@@ -41,32 +38,8 @@ function SingleQuestion() {
 					navigate("/");
 				});
 		} catch (error) {
-			console.log("in catch block");
 			console.log(error);
 		}
-
-
-
-		// fetch("http://localhost:1234/api/questions/single-question/" + questionId, {
-		// 	method: "GET",
-		// 	headers: {
-		// 		authorization: "Bearer " + token,
-		// 	},
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		if (
-		// 			data.msg === "token not provide" ||
-		// 			data.msg === "Authentication Invalid"
-		// 		) {
-		// 			console.log("not provide");
-		// 			navigate("/");
-		// 		}
-		// 		setQuestion(data?.oneQuestion[0]);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error("Error:", error);
-		// 	});
 
 
 			try {
@@ -77,9 +50,6 @@ function SingleQuestion() {
 						},
 					})
 					.then((response) => {
-						// console.log(response);
-						// console.log(response?.data?.allQuestion);
-						// setQuestion(response?.data.allQuestion);
 						setAnswer(response?.data?.allAnswer);
 					})
 					.catch((error) => {
@@ -87,50 +57,14 @@ function SingleQuestion() {
 						navigate("/");
 					});
 			} catch (error) {
-				console.log("in catch block");
 				console.log(error);
 			}
-
-
-
-
-
-
-
-		//fetch to get single question answers
-		// fetch("http://localhost:1234/api/answers/getanswer/" + questionId, {
-		// 	method: "GET",
-		// 	headers: {
-		// 		authorization: "Bearer " + token,
-		// 	},
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		if (
-		// 			data.msg === "token not provide" ||
-		// 			data.msg === "Authentication Invalid"
-		// 		) {
-		// 			console.log("not provide");
-		// 			navigate("/");
-		// 		}
-		// 		setAnswer(data?.allAnswer);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.log("Error:", error);
-		// 	});
 	}, []);
-
-	// useEffect(()=>{
-	//
-	// },[answer])
 
 	function questionAnswer(e) {
 		e.preventDefault();
 		if (userAnswer) {
 			setUserAnswer("");
-			// let userAnswerData = {
-			// 	answer: userAnswer,
-			// };
 				console.log("token ", token);
 				axios
 					.post(
@@ -145,7 +79,6 @@ function SingleQuestion() {
 						}
 					)
 					.then((response) => {
-						console.log(response);
 						setPostResponse(response.data.msg);
 						e.target.reset();
 					})
@@ -155,45 +88,6 @@ function SingleQuestion() {
 		}else {
 			return setPostResponse("answer can't be empty");
 		}
-
-
-
-
-			//fetch to post answer for specific question
-		// 	fetch("http://localhost:1234/api/answers/postanswer/" + questionId, {
-		// 		method: "POST",
-		// 		headers: {
-		// 			"Content-Type": "application/json",
-		// 			authorization: "Bearer " + token,
-		// 		},
-		// 		body: JSON.stringify(userAnswerData),
-		// 	})
-		// 		.then((data) => data.json())
-		// 		.then((data) => {
-		// 			setPostResponse(data.msg);
-		// 			e.target.reset();
-		// 		})
-		// 		.catch((error) => {
-		// 			console.log(error);
-		// 		});
-		// } else {
-		// 	return setPostResponse("answer can't be empty");
-		// }
-
-		// fetch("http://localhost:1234/api/answers/getanswer/" + questionId, {
-		// 	method: "GET",
-		// 	headers: {
-		// 		authorization: "Bearer " + token,
-		// 	},
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		console.log("fetch again");
-		// 		setAnswer(data?.allAnswer);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.log("Error:", error);
-		// 	});
 	}
 
 	return (
@@ -211,7 +105,7 @@ function SingleQuestion() {
 			{answer?.map((singleAnswer) => {
 				let theAnswers = (
 					<div className="singleQAnswers">
-						<div>
+						<div className="width">
 							<img className="questionImage" src={img} alt="" />
 							<p>{singleAnswer.username}</p>
 						</div>

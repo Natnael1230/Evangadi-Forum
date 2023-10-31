@@ -1,4 +1,6 @@
 const mysql2 = require("mysql2");
+
+// // development
 // const dbConnection = mysql2.createPool({
 // 	user: "evangadi-admin",
 // 	database: "try_evangadi",

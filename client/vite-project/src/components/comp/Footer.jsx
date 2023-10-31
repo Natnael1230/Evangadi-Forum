@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Footer.css";
-import img from "./home/image/img3.png";
+import img from "../home/image/img3.png";
 function Footer() {
   return (
 		<div className="mainFooterWrapper container-fluid">

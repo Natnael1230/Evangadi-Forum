@@ -32,7 +32,6 @@ function AskQuestion() {
 					}
 				)
 				.then((response) => {
-					console.log(response);
 					setQuestionResponse(response.data.msg);
 					e.target.reset();
 				})
@@ -40,33 +39,8 @@ function AskQuestion() {
 					console.log(err);
 				});
 		} catch (error) {
-			console.log("in catch block");
 			console.log(error);
 		}
-
-		// fetch("http://localhost:1234/api/questions/new-question", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 		authorization: "Bearer " + token,
-		// 	},
-		// 	body: JSON.stringify(questionData),
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((data) => {
-		// 		if (
-		// 			data.msg === "token not provide" ||
-		// 			data.msg === "Authentication Invalid"
-		// 		) {
-		// 			console.log("not provide");
-		// 			navigate("/");
-		// 		}
-		// 		setQuestionResponse(data.msg);
-		// 		e.target.reset();
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error("Error:", error);
-		// 	});
 	}
 	return (
 		<div className="">

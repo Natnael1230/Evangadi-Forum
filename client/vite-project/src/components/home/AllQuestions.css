@@ -44,3 +44,7 @@
 .questions:hover{
     background-color: #F5F5F6;
 }
+.width{
+    width:90px;
+    text-align: center;
+}
